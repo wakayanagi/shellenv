@@ -71,7 +71,7 @@ alias cd...='cd ../..'
 alias ls='ls -lohF'
 alias df='df -h'
 alias reload='source ~/.zshrc'
-alias ip='ifconfig | grep netmask'
+alias ip='ifconfig | grep ask'
 alias sudo='sudo '
 
 alias python='python3 '
