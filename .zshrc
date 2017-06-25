@@ -1,4 +1,4 @@
-.zshrc created by Kuen 12/30/2013 - 10/10/2016
+# .zshrc created by Kuen 12/30/2013 - 06/25/2017
 
 # Setup new style completion system
 autoload -U compinit && compinit
@@ -89,9 +89,12 @@ alias m3='mpv --screen=2 --fs --ontop'
 alias m169='mpv --vf=scale=1280:-2,crop=1280:720'
 
 #---------------------------------------
-# Grab Computer Name (OSX)
-cName=$(scutil --get ComputerName)
-#cName=$NAME  #For non-OSX computers
+# Grab Computer Name
+cName=$NAME  #For non-OSX computers
+if [[ "$NAME" = "" ]] ; then
+  # Attempt at OSX scutil if $NAME attribute has nothing
+  cName=$(scutil --get ComputerName)
+fi
 
 #---------------------------------------
 # Prompt Setup

@@ -1,4 +1,4 @@
-".vimrc modified 8/12 by Kuen
+".vimrc modified 6/24/17 by Kuen
 " Enable syntax highlighting
 syntax enable
 set background=dark
@@ -18,7 +18,7 @@ set smartindent
 :set nu
 
 " Map keys
-imap <S-Tab> <c-d>
+imap <S-Tab> <c-d>  "Shift-tab to inverse tab
 
 " For UNIX/Linux systems set backspace where default is vi not vim
 "set nocompatible
