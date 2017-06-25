@@ -74,6 +74,8 @@ alias reload='source ~/.zshrc'
 alias ip='ifconfig | grep netmask'
 alias sudo='sudo '
 
+alias python='python3 '
+
 # Aliases - Grep with color, case insensitive, and line number
 alias grep='grep -in --color=auto'
 
