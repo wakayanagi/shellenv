@@ -18,7 +18,8 @@ set smartindent
 :set nu
 
 " Map keys
-imap <S-Tab> <c-d>  "Shift-tab to inverse tab
+" Shift-tab to inverse tab
+imap <S-Tab> <c-d>
 
 " For UNIX/Linux systems set backspace where default is vi not vim
 "set nocompatible

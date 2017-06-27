@@ -1,4 +1,4 @@
-# .zshrc created by Kuen 12/30/2013 - 06/25/2017
+# .zshrc created by Kuen 12/30/2013 - 06/26/2017
 
 # Setup new style completion system
 autoload -U compinit && compinit
@@ -89,12 +89,23 @@ alias m3='mpv --screen=2 --fs --ontop'
 alias m169='mpv --vf=scale=1280:-2,crop=1280:720'
 
 #---------------------------------------
-# Grab Computer Name
-cName=$NAME  #For non-OSX computers
-if [[ "$NAME" = "" ]] ; then
-  # Attempt at OSX scutil if $NAME attribute has nothing
-  cName=$(scutil --get ComputerName)
-fi
+# Perform OS specific setup
+cName=$NAME
+case "$OSTYPE" in
+  # BSD based OS (OSX / FreeBSD)
+  darwin*|bsd*)
+    if [[ "$NAME" = "" ]] ; then
+      cName=$(scutil --get ComputerName)
+    fi
+    export LSCOLORS=gxfxcxdxbxegedabagacad
+    ;;
+
+  # Linux-based OS (Ubuntu / Microsoft)
+  linux*)
+    export LS_COLORS=di=36:ln=35:so=32:pi=33:ex=31:bd=34;46
+    alias ls='ls -lohF --color=auto'
+    ;;
+esac
 
 #---------------------------------------
 # Prompt Setup
