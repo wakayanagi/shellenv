@@ -3,6 +3,9 @@ The shell environment contains scripts releated to customized configuration for 
 
 ## Installation
 Put dot files into ~/ user root.
+.zshrc
+.zls_color.py
+.vimrc
 
 ## Contributors
 Scripts by Kuen.

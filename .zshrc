@@ -1,4 +1,4 @@
-# .zshrc created by Kuen 12/30/2013 - 06/26/2017
+# .zshrc created by Kuen 12/30/2013 - 06/27/2017
 
 # Setup new style completion system
 autoload -U compinit && compinit
@@ -46,7 +46,8 @@ zstyle ':completion:*:warnings' \
 zstyle ':completion:*' insert-tab false
 
 # Color differentiation for different file extensions
-source ~/.zsh_colors
+unset ZLS_COLORS
+export ZLS_COLORS=$(python3 .zls_color.py)
 zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
 
 #---------------------------------------
@@ -68,12 +69,10 @@ bindkey '^[[Z' reverse-menu-complete
 # Aliases
 alias cd..='cd ..'
 alias cd...='cd ../..'
-alias ls='ls -lohF'
 alias df='df -h'
 alias reload='source ~/.zshrc'
 alias ip='ifconfig | grep ask'
 alias sudo='sudo '
-
 alias python='python3 '
 
 # Aliases - Grep with color, case insensitive, and line number
@@ -89,19 +88,20 @@ alias m3='mpv --screen=2 --fs --ontop'
 alias m169='mpv --vf=scale=1280:-2,crop=1280:720'
 
 #---------------------------------------
-# Perform OS specific setup
-cName=$NAME
-case "$OSTYPE" in
-  # BSD based OS (OSX / FreeBSD)
-  darwin*|bsd*)
-    if [[ "$NAME" = "" ]] ; then
-      cName=$(scutil --get ComputerName)
-    fi
-    export LSCOLORS=gxfxcxdxbxegedabagacad
-    ;;
+# Set up ls to show file colors (darwin/bsd)
+export CLICOLOR=1
+unset LSCOLORS
+export LSCOLORS=gxfxcxdxbxegedabagacad
+alias ls='ls -lohF'
 
-  # Linux-based OS (Ubuntu / Microsoft)
+#---------------------------------------
+# Perform OS specific setup
+case "$OSTYPE" in
+  # OSX
+  darwin*) cName=$(scutil --get ComputerName) ;;
+  bsd*) cName=$HOST ;;
   linux*)
+    cName=$HOST
     export LS_COLORS=di=36:ln=35:so=32:pi=33:ex=31:bd=34;46
     alias ls='ls -lohF --color=auto'
     ;;
@@ -119,4 +119,3 @@ if [[ $SHLVL -eq 1 ]] ; then
       "${reset_color}@ %D{%T} on %D{%Y-%m-%d} running $(uname -srm) %1"
   echo
 fi
-
