@@ -24,6 +24,11 @@ unsetopt BEEP
 setopt HIST_IGNORE_DUPS
 
 #---------------------------------------
+# Check for Python3 compatibility
+if [ $(command -v python3) ] ; then alias python='python3' ; fi
+if [[ $(python -V 2>&1) =~ [[:space:]][3.] ]] ; then PYTH3=1 ; fi
+
+#---------------------------------------
 # Completion styles
 # Verbose on for detailed menu items (no truncation)
 zstyle ':completion:*' verbose true
@@ -45,10 +50,12 @@ zstyle ':completion:*:warnings' \
 # Disable tab spacing on empty prompt--brings up tab completion instead
 zstyle ':completion:*' insert-tab false
 
-# Color differentiation for different file extensions
-unset ZLS_COLORS
-export ZLS_COLORS=$(python3 .zls_color.py)
-zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
+# Color differentiation for different file extensions (Python3)
+if [ $PYTH3 ] ; then
+  unset ZLS_COLORS
+  export ZLS_COLORS=$(python .zls_color.py)
+  zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
+fi
 
 #---------------------------------------
 # ZSH file type override for mplayer
@@ -73,7 +80,7 @@ alias df='df -h'
 alias reload='source ~/.zshrc'
 alias ip='ifconfig | grep ask'
 alias sudo='sudo '
-alias python='python3 '
+if [ $(command -v vim) ] ; then alias vi='vim' ; fi
 
 # Aliases - Grep with color, case insensitive, and line number
 alias grep='grep -in --color=auto'
@@ -99,7 +106,9 @@ alias ls='ls -lohF'
 case "$OSTYPE" in
   # OSX
   darwin*) cName=$(scutil --get ComputerName) ;;
-  bsd*) cName=$HOST ;;
+  *bsd*)
+    cName=$HOST
+    ;;
   linux*)
     cName=$HOST
     export LS_COLORS=di=36:ln=35:so=32:pi=33:ex=31:bd=34;46
