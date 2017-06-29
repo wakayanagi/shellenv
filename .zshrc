@@ -95,10 +95,12 @@ alias m3='mpv --screen=2 --fs --ontop'
 alias m169='mpv --vf=scale=1280:-2,crop=1280:720'
 
 #---------------------------------------
-# Set up ls to show file colors (darwin/bsd)
+# Set up ls to show file colors
 export CLICOLOR=1
 unset LSCOLORS
 export LSCOLORS=gxfxcxdxbxegedabagacad
+unset LS_COLORS
+export LS_COLORS=$LS_COLORS:'di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=36:'
 alias ls='ls -lohF'
 
 #---------------------------------------
@@ -111,7 +113,6 @@ case "$OSTYPE" in
     ;;
   linux*)
     cName=$HOST
-    export LS_COLORS=di=36:ln=35:so=32:pi=33:ex=31:bd=34;46
     alias ls='ls -lohF --color=auto'
     ;;
 esac
