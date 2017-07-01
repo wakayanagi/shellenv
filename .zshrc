@@ -36,9 +36,11 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:descriptions' \
   format $'%{- \e[38;5;137;1m\e[48;5;234m%}%B%d%b%{\e[m%}'
 # Tab completion with selectable menu (>1 match)
-zstyle ':completion:*' menu select=1
+#zstyle ':completion:*' menu select=1
+# Tab completion with selectable menu on ambiguous completion
+zstyle ':completion:*' menu yes select
 # Allows for globbing with partial words or characters
-zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' completer _complete _correct _approximate
 # Correctly prioritize expansion categories
 zstyle ':completion:*' group-name ''
 # Case insensitive matching with tab
@@ -55,6 +57,7 @@ if [ $PYTH3 ] ; then
   unset ZLS_COLORS
   export ZLS_COLORS=$(python .zls_color.py)
   zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
+#  zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==02=01}:{(s.:.)ZLS_COLORS}")'
 fi
 
 #---------------------------------------
@@ -69,7 +72,8 @@ zstyle ':completion:*:*:(vi|vim):*:*' \
 
 #---------------------------------------
 # Key Bindings
-bindkey '\e^?' backward-kill-line
+#bindkey '\e^?' backward-kill-line
+bindkey '\e^?' kill-whole-line
 bindkey '^[[Z' reverse-menu-complete
 
 #---------------------------------------
