@@ -44,8 +44,16 @@ zstyle ':completion:*' completer _complete _correct _approximate
 # Correctly prioritize expansion categories
 zstyle ':completion:*' group-name ''
 # Case insensitive matching with tab
+# in order try:
+#   simple tab completion
+#   case insensitive completion
+#   simple substring completion
+#   case insensitive substring completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
-  'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  'r:|[._-]=* r:|=*' 'l:|=* r:|=*' \
+  'm:{a-zA-Z}={A-Za-z} r:|[._-]=* r:|=*' \
+  'm:{a-zA-Z}={A-Za-z} l:|=* r:|=*'
+
 # No match warning message
 zstyle ':completion:*:warnings' \
   format $'%{No match for \e[38;5;240;1m%}%d%{\e[m%}'
