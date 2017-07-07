@@ -23,8 +23,8 @@ defaults_old = [
   'tw=30;42', 'ow=34;42', 'st=37;44', 'ex=01;32']
 
 defaults = [
-  'di=36', 'ln=35', 'so=32', 'pi=33', 'ex=31', 'bd=34;46',
-  'cd=34;43', 'su=30;41', 'sg=30;46', 'tw=30;42', 'ow=36']
+  'di=1;31', 'ln=35', 'so=32', 'pi=33', 'ex=31', 'bd=34;46',
+  'cd=34;43', 'su=30;41', 'sg=30;46', 'tw=30;42', 'ow=1;31']
 
 # Compressed video file extensions
 cvideo = [

@@ -46,7 +46,7 @@ zstyle ':completion:*' group-name ''
 # Case insensitive matching with tab
 # in order try:
 #   simple tab completion
-#   case insensitive completion
+#   case insensitive completion (partial completion .,_,- & l/r completion)
 #   simple substring completion
 #   case insensitive substring completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
@@ -65,13 +65,11 @@ if [ $PYTH3 ] ; then
   unset ZLS_COLORS
   export ZLS_COLORS=$(python .zls_color.py)
   zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
-#  zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==02=01}:{(s.:.)ZLS_COLORS}")'
 fi
 
 #---------------------------------------
 # ZSH file type override for mplayer
-zstyle ':completion:*:*:mplayer:*' tag-order files
-
+#zstyle ':completion:*:*:mpv:*' tag-order files
 # types that should probably not be edited.
 zstyle ':completion:*:*:(vi|vim):*:*' \
   file-patterns '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp):regular-files' \
