@@ -97,8 +97,9 @@ alias grep='grep -in --color=auto'
 
 # MPV Player Aliases
 alias m='mpv'
-alias msl='mpv --geometry=0:0 --vf=scale=480:-2,expand=-10:-10 --ontop'
-alias mbw='mpv --geometry=0:0 --autofit=480 --ontop --saturation=-100'
+#alias msl='mpv --geometry=0:100% --vf=scale=480:-2,expand=-10:-10 --ontop'
+alias msl='mpv --geometry=0:100% --vf=scale=480:-2 --ontop'
+alias mbw='mpv --geometry=0:100% --autofit=480 --ontop --saturation=-100'
 alias m2='mpv --screen=1 --fs --ontop'
 alias m2p='mpv --screen=1 --fs --fs-black-out-screens'
 alias m3='mpv --screen=2 --fs --ontop'

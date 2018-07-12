@@ -1,10 +1,11 @@
-".vimrc modified 7/6/17 by Kuen
+".vimrc modified 7/12/18 by Kuen
 " Enable syntax highlighting
 syntax enable
 set background=dark
 
 " Select a colorscheme
-colorscheme slate
+colorscheme flattened_dark
+" colorscheme slate
 
 " Define 2 space tab
 set softtabstop=2
@@ -13,6 +14,11 @@ set tabstop=2
 set expandtab
 set preserveindent
 set smartindent
+
+" Correct tab indent logic (Python scripting)
+set cindent
+set cinkeys-=0#
+set indentkeys-=0#
 
 " Set line number
 :set nu
