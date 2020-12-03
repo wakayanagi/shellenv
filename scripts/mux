@@ -1,0 +1,53 @@
+#!/bin/zsh
+# POSIX shell script to mux video and audio files together using FFMPEG
+# Input 1: Video file path
+# Input 2: Audio file path
+# Input 3: Specified output path (optional); otherwise path of script
+# Generates stitched video/audio MP4 file
+# Written 2/19/2019 - 2/25/2019
+
+# Set positional argument 1 & 2 as video/audio file respectively
+vfile=$1
+afile=$2
+
+# Check positional arguement 3.  If not set, set to ~/Desktop
+if [ -z ${3+x} ]; then fpath=$(pwd); else fpath=$3; fi
+
+# Check to ensure referenced files exist or if argument string is zero
+if [ ! -e $1 ] || [ -z $1 ]; then
+  echo "mux [video file] [audio file] [path - optional]"
+  echo "Video file not found, exiting script."
+  exit 0
+fi
+if [ ! -e $2 ] || [ -z $2 ]; then
+  echo "Audio file not found, exiting script."
+  exit 0
+fi
+
+# Verify output path is valid
+if [ ! -d "$fpath" ]; then
+  echo "Path to write output file is invalid, exiting script."
+  exit 0
+fi
+
+# Verify output MP4 file does not exist
+# If source video is already .mp4, then append "_mux" to the filename
+oname="$fpath/${${vfile##*/}%.*}.mp4"
+if [ -e $oname ]; then oname="$fpath/${${vfile##*/}%.*}_mux.mp4"; fi
+
+# If output filename with "_mux" exists, exit script.
+if [ -e $oname ]; then
+  echo "File with output filename already exist, exiting script."
+  exit 0
+fi
+
+# Check to ensure ffmpeg exists, otherwise exit script
+if ! command -v ffmpeg > /dev/null; then
+  echo "ffmpeg not found, exiting script."
+  exit 0
+fi
+
+#ffmpeg -i $vfile -i $afile -c:v copy -c:a aac -strict experimental $oname
+ffmpeg -i $vfile -i $afile -c:v copy -c:a copy $oname
+
+echo "File written to:\n$oname"

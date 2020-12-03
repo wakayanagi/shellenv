@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+# Script to rename target file with input string (spaces, etc)
+# Input - target file or folder
+# written by Kuen - 201121
+
+import sys, os
+from pathlib import Path
+
+# Check arguemnt for valid path, otherwise exit script
+ospath = os.path.dirname(os.path.realpath(__file__))
+fpath = str(Path(sys.argv[1])) if len(sys.argv) == 2 else sys.exit()
+
+# Get full path of target file or folder
+cpath = os.getcwd()
+fullpath = os.path.join(cpath, fpath)
+if not (os.path.isfile(fullpath) or os.path.isdir(fullpath)):
+  print("Incorrect path or filename.  No file found.")
+  sys.exit()
+
+# Input string to change file name
+newname = input('Enter new file name: ')
+
+# Path is a file
+if os.path.isfile(fullpath):
+  # Dissect the original file path
+  spath, sfile = os.path.split(fullpath)
+  orgname, ext = os.path.splitext(sfile)
+
+  # Construct output path string
+  newpath = os.path.join(spath, newname + ext)
+
+# Path is a folder
+elif os.path.isdir(fullpath):
+  # Get the parent path of folder
+  spath = os.path.dirname(fullpath)
+
+  # Construct output path string
+  newpath = os.path.join(spath, newname)
+
+# Rename target file to target name
+os.rename(fullpath, newpath)
