@@ -8,7 +8,7 @@ autoload -U colors && colors
 #---------------------------------------
 # Paths
 # Macports additional paths
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:$PATH:$HOME/shellenv/scripts
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 #---------------------------------------
