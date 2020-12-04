@@ -1,4 +1,4 @@
-# .zshrc created by Kuen 12/30/2013 - 06/27/2017
+# .zshrc updated by Kuen 12/30/2013 - 12/04/2020
 
 # Setup new style completion system
 autoload -U compinit && compinit
@@ -17,7 +17,14 @@ export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:$
 setopt GLOB_COMPLETE
 # Superglobs
 unsetopt CASE_GLOB
-setopt EXTENDEDGLOB
+setopt extendedglob
+setopt nocaseglob
+setopt rcexpandparam
+setopt nocheckjobs
+setopt numericglobsort
+setopt appendhistory
+setopt histignorealldups
+#setopt EXTENDEDGLOB
 # Disable beep sound during tab completion
 unsetopt BEEP
 # Ignore duplicate lines in history
