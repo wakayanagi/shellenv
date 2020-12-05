@@ -1,0 +1,31 @@
+#!/bin/zsh
+# POSIX script to create symbolic links in user HOME folder to point
+# to dot files within the shellenv folder
+
+# Set script path and home path
+spath=$(pwd)
+
+# dot files to be installed
+dfiles=(.zshrc .vimrc)
+
+# Loop through, check file, and create links for available dot files
+for df in "${dfiles[@]}"
+do
+  # If dot file exist, create the symlink
+  if test -f "$df"; then
+    # Check to see if target file for symlink exists
+    if test -f "$HOME/$df"; then
+      printf "$df exists in symlink location. Overwrite[y/n]?"
+      read -r fexist
+    fi
+    
+    # Create the symlink if chosen to overwrite or file doesnt exist
+    if [ $fexist != "y" ]; then
+      printf "Skipping $df.\n"
+    else
+      # Create the symlink
+      ln -sfn "$(pwd)/$df" "$HOME/$df"
+      printf "Symlink for $df created.\n"
+    fi
+  fi
+done
