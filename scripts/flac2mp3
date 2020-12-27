@@ -1,0 +1,78 @@
+#!/bin/zsh
+# Shell script to convert FLAC to MP3 while retaining ID3v2 Tag information
+# Input directory with FLAC files
+# Generates output directory with MP3 files to path where script was run
+# unless output folder specified as second input
+# Written 1/31/2019 - 2/19/2019
+
+# Set positional argument 1 as target directory path
+fdir=$1
+
+# Set positional argument 2 as target output directory
+# If not set, use default output folder in path where script was run
+if [ -z ${2+x} ]; then fout="output"; else fout=$2; fi
+
+# Filetype FLAC
+ftype=".flac"
+
+# Exit script if invalid input directory path found
+if [ ! -d "$fdir" ]; then
+  echo "flac2mp3 [input mp3 path] [output flac path - optional]"
+  echo "No valid directory found, exiting script."
+  exit 0
+fi
+
+# Check to ensure ffmpeg exists, otherwise exit script
+if ! command -v ffmpeg > /dev/null; then
+  echo "ffmpeg not found, exiting script."
+  exit 0
+fi
+
+# Check directory path for FLAC files
+# Exit script if no FLAC files found within directory
+#$filecount=$(ls -l $fdir/*$ftype 2>/dev/null | wc -l)
+filecount=$(find $fdir -maxdepth 1 -name '*'$ftype | wc -l)
+if [ $filecount -eq 0 ]; then
+#if [ $(ls -1 $fdir/*.flac 2>/dev/null | wc -l) -eq 0 ]; then
+  echo "No files found, exiting script."
+  exit 0
+fi
+
+# List FLAC files found
+echo "$filecount Files Found: "
+k=0
+for j in $fdir/*$ftype
+do
+  k=$((k+1))
+  echo "$k: $j"
+done
+
+# Check if output folder for MP3 exists
+# If folder exists, prompt to proceed or exit script
+# Else create folder 'output' for specified folder name
+if [ -d $fout ]; then
+  while true;
+  do
+    echo "$fout folder already exists. [Y] to proceed."
+    read response
+    if [[ ! $response =~ ^([yY][eE][sS]|[yY])$ ]]; then
+      echo "Exiting script."; exit 0
+    else
+      break;
+    fi
+  done
+else
+  echo "Creating folder $fout."
+  mkdir $fout
+fi
+
+# Convert FLAC to MP3 with FFMPEG
+echo "Writing converted MP3s to $fout"
+for j in $fdir/*$ftype
+do
+  # Use the same name, replace FLAC extension with MP3
+  mfile=$fout/${${j##*/}%.*}.mp3
+  
+  # Invoke FFMPEG to create 320kbps MP3
+  ffmpeg -i $j -vn -ab 320k -map_metadata 0 -id3v2_version 3 $mfile
+done

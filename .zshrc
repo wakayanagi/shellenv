@@ -1,4 +1,4 @@
-# .zshrc updated by Kuen 12/30/2013 - 12/04/2020
+# .zshrc updated by Kuen 12/30/2013 - 12/26/2020
 
 # Setup new style completion system
 autoload -U compinit && compinit
@@ -7,9 +7,18 @@ autoload -U colors && colors
 
 #---------------------------------------
 # Paths
-# Macports additional paths
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:$PATH:$HOME/shellenv/scripts
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
+export PATH=$PATH:$HOME/shellenv/scripts
+
+# *nix Specific Paths
+case "$OSTYPE" in
+  darwin*)  # OSX
+    # Macports paths
+    export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/mysql/bin:$PATH
+    ;;
+  linux*)
+
+    ;;
+esac
 
 #---------------------------------------
 # Set / unset shell options
@@ -23,17 +32,23 @@ setopt rcexpandparam
 setopt nocheckjobs
 setopt numericglobsort
 setopt appendhistory
-setopt histignorealldups
+setopt histignorealldups    # Trim all history duplicates
 #setopt EXTENDEDGLOB
-# Disable beep sound during tab completion
-unsetopt BEEP
-# Ignore duplicate lines in history
-setopt HIST_IGNORE_DUPS
+unsetopt BEEP               # Disable tab completion beep
+#setopt HIST_IGNORE_DUPS     # Ignore history duplicate lines
 
 #---------------------------------------
 # Check for Python3 compatibility
 if [ $(command -v python3) ] ; then alias python='python3' ; fi
 if [[ $(python -V 2>&1) =~ [[:space:]][3.] ]] ; then PYTH3=1 ; fi
+
+#---------------------------------------
+# LS Colors in terminal
+export CLICOLOR=1
+unset LSCOLORS
+export LSCOLORS=gxfxcxdxbxegedabagacad
+unset LS_COLORS
+export LS_COLORS=$LS_COLORS:'di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=36:'
 
 #---------------------------------------
 # Completion styles
@@ -69,15 +84,16 @@ zstyle ':completion:*' insert-tab false
 
 # Color differentiation for different file extensions (Python3)
 if [ $PYTH3 ] ; then
-  unset ZLS_COLORS
-  export ZLS_COLORS=$(python .zls_color.py)
-  zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
+#  unset ZLS_COLORS
+#  export ZLS_COLORS=$(python .zls_color.py)
+#  zstyle ':completion:*' list-colors ${(s.:.)ZLS_COLORS}
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 
 #---------------------------------------
-# ZSH file type override for mplayer
+# ZSH file type override
 #zstyle ':completion:*:*:mpv:*' tag-order files
-# types that should probably not be edited.
+# VIM types that should probably not be edited.
 zstyle ':completion:*:*:(vi|vim):*:*' \
   file-patterns '*~(*.o|*~|*.old|*.bak|*.pro|*.zwc|*.swp):regular-files' \
                 '(*~|*.bak|*.old):backup-files' \
@@ -90,47 +106,34 @@ bindkey '\e^?' kill-whole-line
 bindkey '^[[Z' reverse-menu-complete
 
 #---------------------------------------
-# Aliases
+# Aliases - general
 alias cd..='cd ..'
 alias cd...='cd ../..'
 alias df='df -h'
-alias reload='source ~/.zshrc'
-alias ip='ifconfig | grep ask'
-alias sudo='sudo '
-if [ $(command -v vim) ] ; then alias vi='vim' ; fi
-
-# Aliases - Grep with color, case insensitive, and line number
 alias grep='grep -in --color=auto'
+alias reload='source ~/.zshrc'
+alias sudo='sudo '
 
-# MPV Player Aliases
-alias m='mpv'
-#alias msl='mpv --geometry=0:100% --vf=scale=480:-2,expand=-10:-10 --ontop'
+# Program specific aliases
+if [ $(command -v vim) ] ; then alias vi='vim' ; fi
+alias m='mpv'     # MPlayer aliases
 alias msl='mpv --geometry=0:100% --vf=scale=480:-2 --ontop'
-alias mbw='mpv --geometry=0:100% --autofit=480 --ontop --saturation=-100'
-alias m2='mpv --screen=1 --fs --ontop'
-alias m2p='mpv --screen=1 --fs --fs-black-out-screens'
-alias m3='mpv --screen=2 --fs --ontop'
-alias m169='mpv --vf=scale=1280:-2,crop=1280:720'
-
-#---------------------------------------
-# Set up ls to show file colors
-export CLICOLOR=1
-unset LSCOLORS
-export LSCOLORS=gxfxcxdxbxegedabagacad
-unset LS_COLORS
-export LS_COLORS=$LS_COLORS:'di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=36:'
-alias ls='ls -lohF'
 
 #---------------------------------------
 # Perform OS specific setup
 case "$OSTYPE" in
-  # OSX
-  darwin*) cName=$(scutil --get ComputerName) ;;
+  darwin*)  # OSX
+    cName=$(scutil --get ComputerName)
+    # Aliasses --
+    alias ls='ls -lohF'
+    alias ip='ifconfig | grep ask'
+    ;;
   *bsd*)
     cName=$HOST
     ;;
   linux*)
     cName=$HOST
+    # Aliasses --
     alias ls='ls -lohF --color=auto'
     ;;
 esac

@@ -1,8 +1,12 @@
 " .vimrc by Kuen - 201118
 " VIM environment settings
 
+if $TERM == "xterm-256color"
+  set t_Co=256
+endif
+
 " Environment Settings
-colorscheme flattened_dark  " Set color scheme
+colorscheme peachpuff       " Set color scheme
 set background=dark         " Set background color
 set nocompatible            " VIM compatibility only
 set encoding=utf-8          " Set Unicode encoding
