@@ -7,7 +7,8 @@ autoload -U colors && colors
 
 #---------------------------------------
 # Paths
-export PATH=$PATH:$HOME/shellenv/scripts
+#export PATH=$PATH:$HOME/shellenv/scripts
+export PATH=:$HOME/shellenv/scripts:$PATH
 
 # *nix Specific Paths
 case "$OSTYPE" in

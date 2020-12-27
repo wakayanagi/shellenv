@@ -21,6 +21,11 @@ if not (os.path.isfile(fullpath) or os.path.isdir(fullpath)):
 # Input string to change file name
 newname = input('Enter new file name: ')
 
+# Leave script if no input found
+if newname == "":
+  print("No new name found, leaving script.")
+  sys.exit()
+
 # Path is a file
 if os.path.isfile(fullpath):
   # Dissect the original file path
