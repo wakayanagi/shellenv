@@ -6,7 +6,8 @@ if $TERM == "xterm-256color"
 endif
 
 " Environment Settings
-colorscheme peachpuff       " Set color scheme
+"colorscheme peachpuff       " Set color scheme
+colorscheme desert          " Set color scheme
 set background=dark         " Set background color
 set nocompatible            " VIM compatibility only
 set encoding=utf-8          " Set Unicode encoding

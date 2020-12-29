@@ -33,10 +33,11 @@ setopt rcexpandparam
 setopt nocheckjobs
 setopt numericglobsort
 setopt appendhistory
-setopt histignorealldups    # Trim all history duplicates
+setopt histignorealldups      # Trim all history duplicates
 #setopt EXTENDEDGLOB
-unsetopt BEEP               # Disable tab completion beep
-#setopt HIST_IGNORE_DUPS     # Ignore history duplicate lines
+unsetopt BEEP                 # Disable tab completion beep
+#setopt HIST_IGNORE_DUPS      # Ignore history duplicate lines
+export QUOTING_STYLE=literal  # prevent quotes on LS output
 
 #---------------------------------------
 # Check for Python3 compatibility
