@@ -111,7 +111,7 @@ bindkey '^[[Z' reverse-menu-complete
 # Aliases - general
 alias cd..='cd ..'
 alias cd...='cd ../..'
-alias df='df -h'
+alias df='df -Ph'
 alias grep='grep -in --color=auto'
 alias reload='source ~/.zshrc'
 alias sudo='sudo '
