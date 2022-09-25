@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+# Script to detect and convert file types to mp4
+# Written 3/27/2021 by Kuen
+# Requires python library ffmpeg-python
+
+import sys, os
+from pathlib import Path
+
+# Check for python library else exit script
+try:
+  import ffmpeg
+except ImportError:
+  print('ffmpeg-python is not installed.  Exiting script.')
+  sys.exit()
+
+# Check arguemnt for valid path, otherwise exit script
+ospath = os.path.dirname(os.path.realpath(__file__))
+fpath = str(Path(sys.argv[1])) if len(sys.argv) == 2 else sys.exit()
+
+# Get full path of target file or folder
+cpath = os.getcwd()
+fullpath = os.path.join(cpath, fpath)
+if not (os.path.isfile(fullpath)):
+  print("Incorrect filename.  No file found.")
+  sys.exit()
+
+# fullpath = file name fed into script argument
+# cpath = directory path
+if os.path.isfile(fullpath):
+  spath, sfile = os.path.split(fullpath)
+  orgname, ext = os.path.splitext(sfile)
+
+#print(spath)  # Folder directory
+#print(sfile)  # File name w/o path
+#print(orgname, ext) # File name w/o path and ext, ext only
+
+# Use ffmpeg to probe the format of the input media
+media = ffmpeg.probe(fullpath)
+vformat, aformat = '', ''
+vname, aname = '', ''
+for stream in media['streams']:
+  if stream['codec_type'] == 'audio':
+    aformat = stream['codec_name']
+    aname = stream['codec_long_name']
+  elif stream['codec_type'] == 'video':
+    vformat = stream['codec_name']
+    vname = stream['codec_long_name']
+
+# Post video format findings
+if vformat == '':
+  print('Video Format: None')
+else:
+  print('Video Format:', vname, '('+vformat+')')
+
+# Post audio format findings
+if aformat == '':
+  print('Audio Format: None')
+else:
+  print('Audio Format:', aname, '('+aformat+')')
+
+# Exit script if either video or audio is missing
+#if vformat == '':# or aformat == '':
+#  if vformat == '':
+#    print('Video stream missing. Exiting script.')
+#  elif aformat == '':
+#    print('Audio stream missing. Exiting script.')
+#  sys.exit()
+
+# File types for conversion
+# ogg,ogv - theora
+# mpg - h264
+# DAT,mpeg - mpeg1video
+# VOB - mpeg2video
+# wmv - wmv1, wmv3
+# AVI - mjpeg
+# rm  - rv20
+# asx - wmav2 (audio)
+# m4a - aac (audio)
+# aiff - pcm_s16le (audio)
+# asf - msmpeg4v3
+# webm - vp9 (google)
+
+# Convert video based on extracted format
+if vformat in ['theora', 'wmv1', 'wmv3', 'mjpeg', 'msmpeg4v3', 'flv1', 'mpeg1video']:
+  os.system('ffmpeg -i \'{0}\' -c:v libx264 -preset veryslow -crf 22 -c:a libmp3lame -qscale:a 2 -ac 2 -ar 44100 \'{1}.mp4\''.format(fullpath,orgname))
+
+elif vformat in ['h264','mpeg2video','vp9']:
+  os.system('ffmpeg -i \'{0}\' -vcodec copy -acodec copy \'{1}.mp4\''.format(fullpath,orgname))
+
+elif vformat in ['rv20']:
+  os.system('ffmpeg -i \'{0}\' -c:v libx264 -c:a aac -b:a 32k \'{1}.mp4\''.format(fullpath, orgname))
+
+elif aformat in ['wmav2', 'aac', 'pcm_s16le'] and vformat=='':
+  # For Audio conversion only
+  os.system('ffmpeg -i \'{0}\' -vn -ar 44100 -ac 2 -b:a 320k \'{1}.mp3\''.format(fullpath, orgname))
+
+else:
+  print('Unknown formats {0}, {1}.  Need to be implemented.'.format(vformat,aformat))
+
+print('end of script')
+

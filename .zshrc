@@ -118,8 +118,9 @@ alias sudo='sudo '
 
 # Program specific aliases
 if [ $(command -v vim) ] ; then alias vi='vim' ; fi
-alias m='mpv'     # MPlayer aliases
+alias m='mpv --autofit-larger=60%'     # MPlayer aliases
 alias msl='mpv --geometry=0:100% --vf=scale=480:-2 --ontop'
+alias m2='mpv --autofit-larger=60% --screen=1 --fs-screen=1' # Second monitor & fs
 
 #---------------------------------------
 # Perform OS specific setup
